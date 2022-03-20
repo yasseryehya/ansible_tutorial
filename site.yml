@@ -19,6 +19,17 @@
     when: ansible_distribution == "Ubuntu"
 
 
+- hosts: all
+  become: true
+  tasks:
+
+  - name: ceate simone user
+    tags: always
+    user:
+      name: simone
+      groups: root
+
+
 - hosts: workstations
   become: true
   tasks:
@@ -89,6 +100,7 @@
     with_items:
       - { src: 'style.css', dest: '/var/www/html/style.css' }
 
+
 - hosts: db_servers
   become: true
   tasks:
@@ -106,6 +118,7 @@
       name: mariadb-server
       state: latest
     when: ansible_distribution == "Ubuntu"
+
 
 - hosts: file_servers
   become: true
