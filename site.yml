@@ -59,14 +59,19 @@
       state: latest
     when: ansible_distribution == "CentOS"
 
+  - name: start httpd (CentOS)
+    tags: apache,centos,httpd
+    service:
+      name: httpd
+      state: started
+      enabled: yes
+    when: ansible_distribution == "CentOS"
+
   - name: copy html file for site
-    tags: apache,apache2,httpd
-    copy:
-      src: default_site.html
-      dest: /var/www/html/index.html
-      owner: root
-      group: root
-      mode: 0644
+    tags: apache,apache2,httpd,copy
+    copy: src={{ 'default_site.html' }} dest={{ '/var/www/html/index.html' }}
+    with_items:
+      - { src: 'style.css', dest: '/var/www/html/style.css' }
 
 - hosts: db_servers
   become: true
